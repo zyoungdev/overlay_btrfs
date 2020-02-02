@@ -1,0 +1,13 @@
+#!/bin/bash
+
+build() {
+  add_dir /base
+  add_dir /upper_dir
+  add_runscript
+}
+
+help() {
+  cat <<HELPEOF
+This hook overlays a btrfs snapshot on top of the root filesystem 
+HELPEOF
+}

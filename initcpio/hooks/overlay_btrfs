@@ -1,0 +1,44 @@
+# This file is part of overlay_btrfs.
+
+  # overlay_btrfs is free software: you can redistribute it and/or modify
+  # it under the terms of the GNU General Public License as published by
+  # the Free Software Foundation, either version 3 of the License, or
+  # (at your option) any later version.
+  
+  # overlay_btrfs is distributed in the hope that it will be useful,
+  # but WITHOUT ANY WARRANTY; without even the implied warranty of
+  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  # GNU General Public License for more details.
+  
+  # You should have received a copy of the GNU General Public License
+  # along with overlay_btrfs.  If not, see <http://www.gnu.org/licenses/>.
+  
+  # Copyright 2020 Zachary Young
+
+#!/bin/bash
+
+run_hook() {
+  if [ "${overlay_snapshot}" ]; then
+    # e.g. overlay_snapshot=.snapshots/overlay/ACTIVE
+
+    root=$(resolve_device "${root}")
+
+    poll_device "$root" 20;
+    "$mount_handler" /base;
+
+    # mount btrfs snapshot to /upper_dir
+    mount "${root}" /upper_dir -o subvol=/"${overlay_snapshot}"
+
+    # mkdir /upper_dir/work -> must be on same filesytem as /upper_dir/delta
+    mkdir -p /upper_dir/{delta,work}
+
+    overlay_mount() {
+      mount overlay_btrfs -t overlay -o lowerdir=/base,upperdir=/upper_dir/delta,workdir=/upper_dir/work "$1"
+    }
+
+    mount_handler=overlay_mount
+
+  else
+    echo "ERROR: set 'overlay_snapshot' on kernel line"
+  fi;
+}
