@@ -30,7 +30,8 @@ run_hook() {
     mount "${root}" /upper_dir -o subvol=/"${overlay_snapshot}"
 
     # mkdir /upper_dir/work -> must be on same filesytem as /upper_dir/delta
-    mkdir -p /upper_dir/{delta,work}
+    mkdir -p /upper_dir/delta
+    mkdir -p /upper_dir/work
 
     overlay_mount() {
       mount overlay_btrfs -t overlay -o lowerdir=/base,upperdir=/upper_dir/delta,workdir=/upper_dir/work "$1"
