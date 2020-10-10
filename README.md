@@ -42,7 +42,7 @@ default_image="/boot/initramfs-linux-overlay.img"
 
 ### Example kernel line
 ``` conf
-options  "root=UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx rootflags=subvol=<path to lower subvolume/snapshot> overlay_snapshot=<path to upper subvoluem/snapshot>"
+options  "root=UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx rootflags=subvol=<path to lower subvolume/snapshot> overlay_snapshot=<path to upper subvolume/snapshot>"
 ```
 
 ## Why?
